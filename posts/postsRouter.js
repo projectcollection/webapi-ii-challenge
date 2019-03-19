@@ -48,6 +48,10 @@ router.put(`/:id`, (req, res) => {
 
     db.update(req.params.id, req.body).then( async dbres => {
         await db.findById(req.params.id).then(post => {
+            if(post.length === 0){
+                res.status(404).json({ message: "The post with the specified ID does not exist." })
+                return
+            }
             res.status(200).json(post)
         })
     }).catch(err => {
